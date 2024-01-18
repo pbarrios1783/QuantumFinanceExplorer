@@ -1,6 +1,4 @@
 
-
-
 # Importamos las librerias
 import yfinance as yf
 import streamlit as st
@@ -8,9 +6,7 @@ import datetime
 import pandas as pd
 import cufflinks as cf
 
-
 cf.go_offline()
-
 
 # Definimos una función para traer la data
 @st.cache_data
@@ -27,10 +23,12 @@ def get_sp500_components():
 @st.cache_data
 def load_data(symbol, start, end):
     return yf.download(symbol, start, end)
+
 # Definimos una función para guardar la data como un csv file
 @st.cache_data
 def convert_df_to_csv(df):
     return df.to_csv().encode("utf-8")
+
 # Definimos una función para guardar la data como un csv file
 @st.cache_data
 def convert_df_to_csv(df):
@@ -78,11 +76,7 @@ bb_flag = exp_bb.checkbox(label="Add Bollinger Bands")
 bb_periods = exp_bb.number_input(label= "BB Periods", min_value=1, max_value=50, value=20, step=1)
 bb_std = exp_bb.number_input(label= "# of standard deviations", min_value=1, max_value=4, value=2, step=1)
 
-
-
-
-
-# 9 Anadir expander con parametros del RSI
+# Anadir expander con parametros del RSI
 exp_rsi = st.sidebar.expander("Relative Strength Index")
 rsi_flag = exp_rsi.checkbox(label="Add RSI")
 rsi_periods = exp_rsi.number_input(
@@ -94,7 +88,7 @@ rsi_upper = exp_rsi.number_input(label="RSI Periods", min_value=1, max_value=90,
 rsi_lower = exp_rsi.number_input(label="Lower RSI", min_value=10, max_value=50, value=30, step=1)
 
 
-#10 Especificar el titulo y texto adicional in el cuerpo principal del app
+# Especificar el titulo y texto adicional in el cuerpo principal del app
 st.title("A simple web app for technical analysis")
 st.subheader("User manual")
 st.write( " * you can select any of the companies that is a component of the S&P index")
@@ -104,10 +98,10 @@ st.write (" * you can add the following Technical Indicators to the plot: Simple
 st.write (" * you can also experiment with different parameters of the indicators")
 
 
-#11 Load the historical stock prices
+# Load the historical stock prices
 df = load_data(ticker, start_date, end_date)
 
-#12 Aanadir el expander con la visión de la data bajada
+# Anadir el expander con la visión de la data bajada
 data_exp = st.expander("Preview data")
 available_cols = df.columns.tolist()
 columns_to_show = data_exp.multiselect("Columns", available_cols, default=available_cols)
@@ -122,7 +116,7 @@ data_exp.download_button(
     mime="text/csv",
 )
 
-#13 Cear el candlestick chart con los TA indicadores
+# Crear el candlestick chart con los TA indicadores
 title_str= f"{tickers_companies_dict[ticker]} 's stock price"
 qf= cf.QuantFig(df, title=title_str)
 if volume_flag:
